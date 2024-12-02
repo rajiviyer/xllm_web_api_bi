@@ -9,6 +9,7 @@ import { queries } from "@/lib/utils/data";
 import { ResultDocProps } from "@/lib/utils/types";
 import { Slider } from "@/components/ui/slider";
 import Link from "next/link";
+import Image from "next/image";
 
 const ParamForm: React.FC<ResultDocProps> = ({ setResult }) => {
   const { register, handleSubmit } = useForm<FormType>();
@@ -164,248 +165,253 @@ const ParamForm: React.FC<ResultDocProps> = ({ setResult }) => {
   };
 
   return (
-    <div className="container p-1 border border-bondingai_input_border/[0.60] rounded-md mt-2">
-      <h2 className="text-slate-100 mb-3 text-center">Parameters</h2>
-      {/* <Slider defaultValue={[33]} max={100} step={1} className="bg-white" /> */}
-      <form onSubmit={handleSubmit(retrieveDocs)} className="w-full">
-        <fieldset className="border rounded-md border-bondingai_input_border/[0.60] p-2 mb-4">
-          <legend className="text-bondingai_input_label text-sm">Embedding</legend>
+    <div>
+      <div className="container p-1 border border-bondingai_input_border/[0.60] rounded-md mt-2">
+        <h2 className="text-slate-100 mb-3 text-center">Parameters</h2>
+        {/* <Slider defaultValue={[33]} max={100} step={1} className="bg-white" /> */}
+        <form onSubmit={handleSubmit(retrieveDocs)} className="w-full">
+          <fieldset className="border rounded-md border-bondingai_input_border/[0.60] p-2 mb-4">
+            <legend className="text-bondingai_input_label text-sm">Embedding</legend>
+            <div className="flex flex-wrap">
+              <div className="w-full md:w-1/2 px-2 mb-6 md:mb-0">
+                <label
+                  className="text-bondingai_input_label text-sm"
+                  htmlFor="embeddingKeyMinSize"
+                >
+                  Key Min. Size
+                </label>
+                <input
+                  type="number"
+                  {...register("embeddingKeyMinSize", { required: true })}
+                  value={formData.embeddingKeyMinSize}
+                  min="1"
+                  max="3"
+                  step="1"
+                  onChange={(event) => handleInputChange(event)}
+                  className="bg-bondingai_primary border border-bondingai_input_border/[0.60] text-slate-300 text-sm rounded-md w-40 p-1"
+                />
+              </div>
+              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <label
+                  className="text-bondingai_input_label text-sm"
+                  htmlFor="embeddingValuesMinSize"
+                >
+                  Values Min. Size
+                </label>
+                <input
+                  type="number"
+                  {...register("embeddingValuesMinSize", { required: true })}
+                  value={formData.embeddingValuesMinSize}
+                  onChange={(event) => handleInputChange(event)}
+                  min="1"
+                  max="3"
+                  step="1"
+                  className="bg-bondingai_primary border border-bondingai_input_border/[0.60] text-slate-300 text-sm rounded-md w-40 p-1"
+                />
+              </div>
+            </div>
+          </fieldset>
+          <div className="flex flex-wrap mb-4">
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label className="text-bondingai_input_label text-sm" htmlFor="min_pmi">
+                Min. PMI
+              </label>
+              <input
+                type="number"
+                {...register("min_pmi", { required: true })}
+                value={formData.min_pmi}
+                onChange={(event) => handleInputChange(event)}
+                min="0.00"
+                max="2.00"
+                step="0.01"
+                className="bg-bondingai_primary border border-bondingai_input_border text-slate-300 text-sm rounded-md w-40 p-1"
+              />
+            </div>
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label className="text-bondingai_input_label text-sm" htmlFor="Customized_pmi">
+                Custom PMI
+              </label>
+              <OptionButton
+                handleOptionButtonClick={handleOptionButtonClickCustomPMI}
+                selectedOption={customPMI}
+                option1="Yes"
+                option2="No"
+              />
+            </div>
+          </div>
+          <div className="flex flex-wrap mb-4">
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label
+                className="text-bondingai_input_label text-sm"
+                htmlFor="minOutputListSize"
+              >
+                Min. Out. List Size
+              </label>
+              <input
+                type="number"
+                {...register("minOutputListSize", { required: true })}
+                value={formData.minOutputListSize}
+                onChange={(event) => handleInputChange(event)}
+                min="1"
+                max="2"
+                step="1"
+                className="bg-bondingai_primary border border-bondingai_input_border text-slate-300 text-sm rounded-md w-40 p-1"
+              />
+            </div>
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label className="text-bondingai_input_label text-sm" htmlFor="nABmin">
+                nABmin &nbsp;
+              </label>
+              <input
+                type="number"
+                {...register("nABmin", { required: true })}
+                value={formData.nABmin}
+                onChange={(event) => handleInputChange(event)}
+                min="1"
+                max="3"
+                step="1"
+                className="bg-bondingai_primary border border-bondingai_input_border text-slate-300 text-sm rounded-md w-40 p-1"
+              />
+            </div>
+          </div>
+          <div className="flex flex-wrap mb-4">
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label
+                className="text-bondingai_input_label text-sm"
+                htmlFor="ContextMultitokenMinSize"
+              >
+                Ctxt. Multitoken Min. Size
+              </label>
+              <input
+                type="number"
+                {...register("ContextMultitokenMinSize", { required: true })}
+                value={formData.ContextMultitokenMinSize}
+                onChange={(event) => handleInputChange(event)}
+                min="1"
+                max="3"
+                step="1"
+                className="bg-bondingai_primary border border-bondingai_input_border text-slate-300 text-sm rounded-md w-40 p-1"
+              />
+            </div>
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label className="text-bondingai_input_label text-sm" htmlFor="maxTokenCount">
+                Max. Token Count
+              </label>
+              <input
+                type="number"
+                {...register("maxTokenCount", { required: true })}
+                value={formData.maxTokenCount}
+                min="5"
+                max="200"
+                step="1"
+                onChange={(event) => handleInputChange(event)}
+                className="bg-bondingai_primary border border-bondingai_input_border text-slate-300 text-sm rounded-md w-40 p-1"
+              />
+            </div>
+          </div>
           <div className="flex flex-wrap">
-            <div className="w-full md:w-1/2 px-2 mb-6 md:mb-0">
-              <label
-                className="text-bondingai_input_label text-sm"
-                htmlFor="embeddingKeyMinSize"
-              >
-                Key Min. Size
-              </label>
-              <input
-                type="number"
-                {...register("embeddingKeyMinSize", { required: true })}
-                value={formData.embeddingKeyMinSize}
-                min="1"
-                max="3"
-                step="1"
-                onChange={(event) => handleInputChange(event)}
-                className="bg-bondingai_primary border border-bondingai_input_border/[0.60] text-slate-300 text-sm rounded-md w-40 p-1"
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label className="text-bondingai_input_label text-sm">Bypass Ignore List</label>
+              <OptionButton
+                handleOptionButtonClick={handleOptionButtonClickIgnoreList}
+                selectedOption={byPassList}
+                option1="Yes"
+                option2="No"
               />
             </div>
+            {byPassList === false && (
+              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <label className="text-bondingai_input_label text-sm" htmlFor="ignoreList">
+                  Ignore List (Comma Sep.)
+                </label>
+                <textarea
+                  {...register("ignoreList", { required: true })}
+                  value={formData.ignoreList}
+                  onChange={(event) => handleInputChange(event)}
+                  placeholder="data,.."
+                  className="bg-bondingai_primary border border-bondingai_input_border text-slate-300 text-sm rounded-md w-40 p-1 transition-all duration-300 ease-in-out"
+                  style={{ height: `${heightIgnoreList}` }} // Apply dynamic height
+                  onFocus={handleFocusIgnoreList}
+                  onBlur={handleBlurIgnoreList}
+                />
+              </div>
+            )}
+          </div>
+          <div className="flex flex-wrap mb-6">
             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <label
-                className="text-bondingai_input_label text-sm"
-                htmlFor="embeddingValuesMinSize"
-              >
-                Values Min. Size
-              </label>
-              <input
-                type="number"
-                {...register("embeddingValuesMinSize", { required: true })}
-                value={formData.embeddingValuesMinSize}
-                onChange={(event) => handleInputChange(event)}
-                min="1"
-                max="3"
-                step="1"
-                className="bg-bondingai_primary border border-bondingai_input_border/[0.60] text-slate-300 text-sm rounded-md w-40 p-1"
+              <label className="text-bondingai_input_label text-sm">Query</label>
+              <OptionButton
+                handleOptionButtonClick={handleOptionButtonClickQuery}
+                selectedOption={seedQuery}
+                option1="Seeded"
+                option2="Custom"
               />
             </div>
+            {seedQuery === true ? (
+              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <br />
+                <select
+                  {...register("queryText", { required: true })}
+                  className="bg-bondingai_primary border border-bondingai_input_border text-slate-300 text-sm h-2/3 rounded-md w-40 p-1"
+                  onChange={(event) => handleInputChange(event)}
+                >
+                  {queries.map((query, index) => {
+                    return (
+                      <option key={index} value={query}>
+                        {query}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            ) : (
+              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <br />
+                <textarea
+                  {...register("queryText", { required: true })}
+                  value={formData.queryText}
+                  onChange={(event) => handleInputChange(event)}
+                  placeholder="parameterized datasets map tables sql server..."
+                  className="bg-bondingai_primary border border-bondingai_input_border text-slate-300 text-sm rounded-md w-40 p-1 transition-all duration-300 ease-in-out"
+                  style={{ height: `${heightQueryText}` }} // Apply dynamic height
+                  onFocus={handleFocusQueryText}
+                  onBlur={handleBlurQueryText}
+                />
+              </div>
+            )}
           </div>
-        </fieldset>
-        <div className="flex flex-wrap mb-4">
-          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label className="text-bondingai_input_label text-sm" htmlFor="min_pmi">
-              Min. PMI
-            </label>
-            <input
-              type="number"
-              {...register("min_pmi", { required: true })}
-              value={formData.min_pmi}
-              onChange={(event) => handleInputChange(event)}
-              min="0.00"
-              max="2.00"
-              step="0.01"
-              className="bg-bondingai_primary border border-bondingai_input_border text-slate-300 text-sm rounded-md w-40 p-1"
-            />
-          </div>
-          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label className="text-bondingai_input_label text-sm" htmlFor="Customized_pmi">
-              Custom PMI
-            </label>
-            <OptionButton
-              handleOptionButtonClick={handleOptionButtonClickCustomPMI}
-              selectedOption={customPMI}
-              option1="Yes"
-              option2="No"
-            />
-          </div>
-        </div>
-        <div className="flex flex-wrap mb-4">
-          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label
-              className="text-bondingai_input_label text-sm"
-              htmlFor="minOutputListSize"
-            >
-              Min. Out. List Size
-            </label>
-            <input
-              type="number"
-              {...register("minOutputListSize", { required: true })}
-              value={formData.minOutputListSize}
-              onChange={(event) => handleInputChange(event)}
-              min="1"
-              max="2"
-              step="1"
-              className="bg-bondingai_primary border border-bondingai_input_border text-slate-300 text-sm rounded-md w-40 p-1"
-            />
-          </div>
-          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label className="text-bondingai_input_label text-sm" htmlFor="nABmin">
-              nABmin
-            </label>
-            <input
-              type="number"
-              {...register("nABmin", { required: true })}
-              value={formData.nABmin}
-              onChange={(event) => handleInputChange(event)}
-              min="1"
-              max="3"
-              step="1"
-              className="bg-bondingai_primary border border-bondingai_input_border text-slate-300 text-sm rounded-md w-40 p-1"
-            />
-          </div>
-        </div>
-        <div className="flex flex-wrap mb-4">
-          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label
-              className="text-bondingai_input_label text-sm"
-              htmlFor="ContextMultitokenMinSize"
-            >
-              Ctxt. Multitoken Min. Size
-            </label>
-            <input
-              type="number"
-              {...register("ContextMultitokenMinSize", { required: true })}
-              value={formData.ContextMultitokenMinSize}
-              onChange={(event) => handleInputChange(event)}
-              min="1"
-              max="3"
-              step="1"
-              className="bg-bondingai_primary border border-bondingai_input_border text-slate-300 text-sm rounded-md w-40 p-1"
-            />
-          </div>
-          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label className="text-bondingai_input_label text-sm" htmlFor="maxTokenCount">
-              Max. Token Count
-            </label>
-            <input
-              type="number"
-              {...register("maxTokenCount", { required: true })}
-              value={formData.maxTokenCount}
-              min="5"
-              max="200"
-              step="1"
-              onChange={(event) => handleInputChange(event)}
-              className="bg-bondingai_primary border border-bondingai_input_border text-slate-300 text-sm rounded-md w-40 p-1"
-            />
-          </div>
-        </div>
-        <div className="flex flex-wrap">
-          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label className="text-bondingai_input_label text-sm">Bypass Ignore List</label>
-            <OptionButton
-              handleOptionButtonClick={handleOptionButtonClickIgnoreList}
-              selectedOption={byPassList}
-              option1="Yes"
-              option2="No"
-            />
-          </div>
-          {byPassList === false && (
-            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <label className="text-bondingai_input_label text-sm" htmlFor="ignoreList">
-                Ignore List (Comma Sep.)
-              </label>
-              <textarea
-                {...register("ignoreList", { required: true })}
-                value={formData.ignoreList}
-                onChange={(event) => handleInputChange(event)}
-                placeholder="data,.."
-                className="bg-bondingai_primary border border-bondingai_input_border text-slate-300 text-sm rounded-md w-40 p-1 transition-all duration-300 ease-in-out"
-                style={{ height: `${heightIgnoreList}` }} // Apply dynamic height
-                onFocus={handleFocusIgnoreList}
-                onBlur={handleBlurIgnoreList}
-              />
-            </div>
-          )}
-        </div>
-        <div className="flex flex-wrap mb-6">
-          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label className="text-bondingai_input_label text-sm">Query</label>
-            <OptionButton
-              handleOptionButtonClick={handleOptionButtonClickQuery}
-              selectedOption={seedQuery}
-              option1="Seeded"
-              option2="Custom"
-            />
-          </div>
-          {seedQuery === true ? (
-            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <br />
-              <select
-                {...register("queryText", { required: true })}
-                className="bg-bondingai_primary border border-bondingai_input_border text-slate-300 text-sm h-2/3 rounded-md w-40 p-1"
-                onChange={(event) => handleInputChange(event)}
-              >
-                {queries.map((query, index) => {
-                  return (
-                    <option key={index} value={query}>
-                      {query}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-          ) : (
-            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <br />
-              <textarea
-                {...register("queryText", { required: true })}
-                value={formData.queryText}
-                onChange={(event) => handleInputChange(event)}
-                placeholder="parameterized datasets map tables sql server..."
-                className="bg-bondingai_primary border border-bondingai_input_border text-slate-300 text-sm rounded-md w-40 p-1 transition-all duration-300 ease-in-out"
-                style={{ height: `${heightQueryText}` }} // Apply dynamic height
-                onFocus={handleFocusQueryText}
-                onBlur={handleBlurQueryText}
-              />
-            </div>
-          )}
-        </div>
-        <div className="flex flex-row justify-center gap-4 px-3 mb-4">
-          <Button buttonType="submit">Retrieve Docs</Button>
-          {/* <Link href="/" passHref onClick={handleResetButtonClick}> */}
-          <Button buttonType="button" onClick={handleResetButtonClick}>
-            Reset
-          </Button>
-          {/* </Link> */}
-          <div className="relative inline-block group">
-            <Button buttonType="button" onClick={handleDebugButtonClick}>
-              Debug
+          <div className="flex flex-row justify-center gap-4 px-3 mb-4">
+            <Button buttonType="submit">Retrieve Docs</Button>
+            {/* <Link href="/" passHref onClick={handleResetButtonClick}> */}
+            <Button buttonType="button" onClick={handleResetButtonClick}>
+              Reset
             </Button>
-            <div
-              id="tooltip-debug"
-              data-tooltip-placement="top"
-              className="absolute z-50 invisible opacity-0 group-hover:visible group-hover:opacity-100 break-words rounded-lg bg-black py-1.5 px-3 font-sans text-sm font-normal text-white top-[-60px] left-[-40px] transform transition-opacity duration-300 w-40"
-            >
-              Debug resets numeric inputs to their minimum values.
+            {/* </Link> */}
+            <div className="relative inline-block group">
+              <Button buttonType="button" onClick={handleDebugButtonClick}>
+                Debug
+              </Button>
+              <div
+                id="tooltip-debug"
+                data-tooltip-placement="top"
+                className="absolute z-50 invisible opacity-0 group-hover:visible group-hover:opacity-100 break-words rounded-lg bg-black py-1.5 px-3 font-sans text-sm font-normal text-white top-[-60px] left-[-40px] transform transition-opacity duration-300 w-40"
+              >
+                Debug resets numeric inputs to their minimum values.
+              </div>
             </div>
+            {/* <Link
+              href="/"
+              passHref
+              onClick={handleDebugButtonClick}
+              className="relative inline-block group"
+            > */}
+            {/* </Link> */}
           </div>
-          {/* <Link
-            href="/"
-            passHref
-            onClick={handleDebugButtonClick}
-            className="relative inline-block group"
-          > */}
-          {/* </Link> */}
-        </div>
-      </form>
+        </form>
+      </div>
+      <div className="mt-7">
+          <Image src="/xllm_tagline.png" alt="xllm tagline" width={75} height={25} />
+      </div>
     </div>
   );
 };
